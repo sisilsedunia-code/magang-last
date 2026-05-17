@@ -4,7 +4,7 @@ session_start();
 require_once '../config/Database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: /login");
     exit;
 }
 
@@ -38,7 +38,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$data) {
     session_destroy();
-    header("Location: login.php");
+    header("Location: /login");
     exit;
 }
 
@@ -91,7 +91,7 @@ $status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
                         <div class="dropdown-header">Akun Saya</div>
                         <a href="#" id="btnProfil"><i class="bi bi-person me-2"></i>Profil</a>
                         <div class="dropdown-divider my-1"></div>
-                        <a href="../logout.php" class="text-danger"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
+                        <a href="/logout" class="text-danger"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
                     </div>
                 </div>
             </div>
@@ -236,3 +236,4 @@ $status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
 <script src="assets/js/mahasiswa.js"></script>
 </body>
 </html>
+

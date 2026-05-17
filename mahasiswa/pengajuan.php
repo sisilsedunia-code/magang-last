@@ -3,7 +3,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: /login");
     exit;
 }
 
@@ -66,7 +66,7 @@ $data_mitra = $stmtMitra->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="profile-dropdown" id="profileDropdown">
                         <div class="dropdown-header">Akun Saya</div>
-                        <a href="../logout.php" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
+                        <a href="/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
                     </div>
                 </div>
             </div>
@@ -242,7 +242,7 @@ $data_mitra = $stmtMitra->fetchAll(PDO::FETCH_ASSOC);
         <p>Apakah Anda yakin ingin keluar dari sistem?</p>
         <div class="modal-actions">
             <button class="btn-cancel" id="btnBatal">Batal</button>
-            <a href="../logout.php" style="flex:1;text-decoration:none;"><button class="btn-logout" style="width:100%;">Ya, Keluar</button></a>
+            <a href="/logout" style="flex:1;text-decoration:none;"><button class="btn-logout" style="width:100%;">Ya, Keluar</button></a>
         </div>
     </div>
 </div>
@@ -261,3 +261,4 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="assets/js/pengajuan.js"></script>
 </body>
 </html>
+

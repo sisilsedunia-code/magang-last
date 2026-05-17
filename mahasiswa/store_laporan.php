@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Jakarta');
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: /login");
     exit;
 }
 
