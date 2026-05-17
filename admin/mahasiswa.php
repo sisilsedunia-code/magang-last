@@ -162,9 +162,9 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                 <div class="table-header">
                     <h5 class="m-0" style="color: #1e293b;">Daftar Mahasiswa</h5>
                     <div class="d-flex gap-3 align-items-center">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-funnel text-muted me-2"></i>
-                            <form method="GET">
+                        <form method="GET">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-funnel text-muted me-2"></i>
                                 <select name="kota" class="form-select form-select-sm" onchange="this.form.submit()" style="border-radius: 8px; font-size: 13px; color: #475569; width: 140px; border-color: #e2e8f0;">
                                     <option value="">Semua Kota</option>
                                     <?php foreach ($data_kota as $kota): ?>
@@ -173,8 +173,11 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
+                        <a href="tambahMahasiswa.php" class="btn-add text-decoration-none">
+                            <i class="bi bi-plus-lg me-2"></i> Tambah Mahasiswa
+                        </a>
                     </div>
                 </div>
 
