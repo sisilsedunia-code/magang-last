@@ -183,6 +183,14 @@ $status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
                     </div>
                     <h3>Proposal Ditolak</h3>
                     <p>Proposal magang Anda ditolak. Silakan ajukan ulang proposal baru.</p>
+                    
+                    <?php if (!empty($pengajuan['catatan'])): ?>
+                    <div class="alert alert-danger text-start mt-3 mb-4" role="alert" style="border-radius: 8px; font-size: 14px;">
+                        <strong><i class="bi bi-exclamation-triangle-fill me-2"></i>Alasan Penolakan:</strong><br>
+                        <span class="mt-1 d-block text-muted"><?= htmlspecialchars($pengajuan['catatan']) ?></span>
+                    </div>
+                    <?php endif; ?>
+
                     <a href="pengajuan.php" class="btn-primary-gradient">
                         <i class="bi bi-arrow-repeat me-2"></i>Ajukan Ulang
                     </a>

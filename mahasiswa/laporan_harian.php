@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 
 require_once '../config/database.php';
@@ -24,7 +24,14 @@ $nim = $mahasiswa['NIM'];
 $prodi = $mahasiswa['prodi'];
 $email = $mahasiswa['email'];
 
-$stmtPendaftaran = $conn->prepare("SELECT * FROM pendaftaran_magang WHERE id_mahasiswa = ? ORDER BY id_pendaftaran DESC LIMIT 1");
+$stmtPendaftaran = $conn->prepare("
+    SELECT pm.*, d.nama as nama_dosen
+    FROM pendaftaran_magang pm
+    LEFT JOIN dosen d ON pm.id_dosen = d.id_dosen
+    WHERE pm.id_mahasiswa = ?
+    ORDER BY pm.id_pendaftaran DESC
+    LIMIT 1
+");
 $stmtPendaftaran->execute([$user['id']]);
 $pendaftaran = $stmtPendaftaran->fetch(PDO::FETCH_ASSOC);
 
@@ -88,19 +95,17 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
     <div class="main-container">
 
         <?php if (isset($_SESSION['error'])) : ?>
-            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <div class="alert alert-danger fade show mb-4" role="alert">
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 <?= $_SESSION['error']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
         <?php if (isset($_SESSION['success'])) : ?>
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <div class="alert alert-success fade show mb-4" role="alert">
                 <i class="bi bi-check-circle me-2"></i>
                 <?= $_SESSION['success']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
@@ -314,6 +319,13 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
                 <div>
                     <div class="profile-detail-label">Program Studi</div>
                     <div class="profile-detail-value"><?= htmlspecialchars($prodi) ?></div>
+                </div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-icon"><i class="bi bi-person-badge"></i></div>
+                <div>
+                    <div class="profile-detail-label">Dosen Pembimbing</div>
+                    <div class="profile-detail-value"><?= htmlspecialchars($pendaftaran['nama_dosen'] ?? 'Belum Ditentukan') ?></div>
                 </div>
             </div>
             <div class="profile-detail">

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 
 require_once '../config/database.php';
@@ -29,10 +29,11 @@ $prodi = $mahasiswa['prodi'];
 $email = $mahasiswa['email'];
 
 $stmtPendaftaran = $conn->prepare("
-    SELECT *
-    FROM pendaftaran_magang
-    WHERE id_mahasiswa = ? AND status_pendaftaran = 'Aktif'
-    ORDER BY id_pendaftaran DESC
+    SELECT pm.*, d.nama as nama_dosen
+    FROM pendaftaran_magang pm
+    LEFT JOIN dosen d ON pm.id_dosen = d.id_dosen
+    WHERE pm.id_mahasiswa = ? AND pm.status_pendaftaran = 'Aktif'
+    ORDER BY pm.id_pendaftaran DESC
     LIMIT 1
 ");
 $stmtPendaftaran->execute([$user['id']]);
@@ -248,6 +249,13 @@ $data_notif = $stmtNotif->fetchAll(PDO::FETCH_ASSOC);
                 <div>
                     <div class="profile-detail-label">Program Studi</div>
                     <div class="profile-detail-value"><?= htmlspecialchars($prodi) ?></div>
+                </div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-icon"><i class="bi bi-person-badge"></i></div>
+                <div>
+                    <div class="profile-detail-label">Dosen Pembimbing</div>
+                    <div class="profile-detail-value"><?= htmlspecialchars($pendaftaran['nama_dosen'] ?? 'Belum Ditentukan') ?></div>
                 </div>
             </div>
             <div class="profile-detail">

@@ -73,21 +73,35 @@ $data_mitra = $stmtMitra->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <?php if (isset($_SESSION['error'])) : ?>
-            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <div class="alert alert-danger fade show mb-4" role="alert">
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 <?= $_SESSION['error']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
         <?php if (isset($_SESSION['success'])) : ?>
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <div class="alert alert-success fade show mb-4" role="alert">
                 <i class="bi bi-check-circle me-2"></i>
                 <?= $_SESSION['success']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <?php
+        // Fetch the most recent rejected proposal to show the reason
+        $stmtRejected = $conn->prepare("SELECT catatan FROM pengajuan WHERE id_mahasiswa = ? AND status = 'Ditolak' ORDER BY created_at DESC LIMIT 1");
+        $stmtRejected->execute([$user['id']]);
+        $rejected = $stmtRejected->fetch(PDO::FETCH_ASSOC);
+        
+        if ($rejected && !empty($rejected['catatan'])): 
+        ?>
+            <div class="alert alert-warning mb-4" role="alert" style="border-radius: 8px; font-size: 14px; border-left: 4px solid #ffc107;">
+                <h6 class="alert-heading fw-bold mb-1"><i class="bi bi-info-circle-fill me-2"></i>Catatan Penolakan Sebelumnya</h6>
+                <hr class="my-2" style="opacity: 0.15;">
+                <span class="text-dark"><?= nl2br(htmlspecialchars($rejected['catatan'])) ?></span>
+                <p class="mb-0 mt-2 text-muted" style="font-size: 12px;">Mohon perhatikan catatan ini sebelum mengirim ulang proposal magang Anda.</p>
+            </div>
         <?php endif; ?>        
 
         <form id="formPengajuan" method="POST" action="pengajuan_store.php" enctype="multipart/form-data">

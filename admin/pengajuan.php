@@ -388,12 +388,21 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
     <!-- APPROVE CONFIRMATION MODAL -->
     <div class="modal-overlay" id="approveModal">
-        <div class="modal-box">
-            <div class="modal-icon" style="background:rgba(25,135,84,0.1); color:#198754;">
+        <div class="modal-box" style="text-align: left; width: 420px;">
+            <div class="modal-icon" style="background:rgba(25,135,84,0.1); color:#198754; margin: 0 auto 16px;">
                 <i class="bi bi-check-circle"></i>
             </div>
-            <h5>Setujui Pengajuan?</h5>
-            <p>Apakah Anda yakin ingin menyetujui pengajuan ini?</p>
+            <h5 class="text-center">Setujui Pengajuan?</h5>
+            <p class="text-center mb-3">Apakah Anda yakin ingin menyetujui pengajuan ini?</p>
+            <div class="mb-4">
+                <label class="form-label" style="font-size:13px; font-weight:600; color:#475569;">Pilih Dosen Pembimbing <span class="text-danger">*</span></label>
+                <select id="approve-dosen-select" class="form-select" style="font-size:14px; border-radius:8px; border-color:#e2e8f0;">
+                    <option value="" disabled selected>-- Pilih Dosen Pembimbing --</option>
+                    <?php foreach ($data_dosen as $dsn): ?>
+                        <option value="<?= $dsn['id_dosen'] ?>"><?= $dsn['nama'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div class="modal-actions">
                 <button class="btn-cancel" id="btnBatalApprove">Batal</button>
                 <button style="flex:1; padding:10px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:none; background:#198754; color:#fff;" id="btnConfirmApprove">Ya, Setujui</button>
@@ -403,12 +412,16 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
     <!-- REJECT CONFIRMATION MODAL -->
     <div class="modal-overlay" id="rejectModal">
-        <div class="modal-box">
-            <div class="modal-icon">
+        <div class="modal-box" style="width: 400px; text-align: left;">
+            <div class="modal-icon" style="margin: 0 auto 16px;">
                 <i class="bi bi-x-circle"></i>
             </div>
-            <h5>Tolak Pengajuan?</h5>
-            <p>Apakah Anda yakin ingin menolak pengajuan ini?</p>
+            <h5 class="text-center">Tolak Pengajuan?</h5>
+            <p class="text-center mb-3">Apakah Anda yakin ingin menolak pengajuan ini?</p>
+            <div class="mb-4">
+                <label class="form-label" style="font-size:13px; font-weight:600; color:#475569;">Alasan Penolakan (Opsional)</label>
+                <textarea id="catatanReject" class="form-control" style="font-size:14px; resize:none;" rows="3" placeholder="Masukkan alasan mengapa pengajuan ini ditolak..."></textarea>
+            </div>
             <div class="modal-actions">
                 <button class="btn-cancel" id="btnBatalReject">Batal</button>
                 <button class="btn-logout" id="btnConfirmReject">Ya, Tolak</button>

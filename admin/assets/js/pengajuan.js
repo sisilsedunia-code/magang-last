@@ -120,6 +120,11 @@ document
     detailModal.classList.remove("show");
 
     selectedApproveId = this.dataset.id;
+    
+    const detDosenVal = document.getElementById("det-dosen-select").value;
+    if(detDosenVal) {
+        document.getElementById("approve-dosen-select").value = detDosenVal;
+    }
 
     approveModal.classList.add("show");
   });
@@ -131,7 +136,7 @@ btnBatalApprove.addEventListener("click", () => {
 btnConfirmApprove.addEventListener("click", () => {
 
   const idDosen =
-    document.getElementById("det-dosen-select").value;
+    document.getElementById("approve-dosen-select").value;
 
   if (!idDosen) {
     alert("Pilih dosen pembimbing terlebih dahulu.");
@@ -184,8 +189,9 @@ btnBatalReject.addEventListener("click", () => {
 });
 
 btnConfirmReject.addEventListener("click", () => {
+  const catatan = document.getElementById("catatanReject").value;
   window.location.href =
-    "pengajuan_action.php?id=" + selectedRejectId + "&action=reject";
+    "pengajuan_action.php?id=" + selectedRejectId + "&action=reject&catatan=" + encodeURIComponent(catatan);
 });
 
 rejectModal.addEventListener("click", function (e) {

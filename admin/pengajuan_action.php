@@ -7,14 +7,20 @@ $conn = $db->getConnection();
 $id = $_GET['id'];
 $action = $_GET['action'];
 $id_dosen = $_GET['id_dosen'] ?? null;
+$catatan = $_GET['catatan'] ?? '';
 $status = ($action === 'approve') ? 'Disetujui' : 'Ditolak';
 
 $stmtPengajuan = $conn->prepare("SELECT * FROM pengajuan WHERE id_pengajuan = ?");
 $stmtPengajuan->execute([$id]);
 $pengajuan = $stmtPengajuan->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $conn->prepare("UPDATE pengajuan SET status = ? WHERE id_pengajuan = ?");
-$stmt->execute([$status, $id]);
+if ($action === 'reject' && $catatan !== '') {
+    $stmt = $conn->prepare("UPDATE pengajuan SET status = ?, catatan = ? WHERE id_pengajuan = ?");
+    $stmt->execute([$status, $catatan, $id]);
+} else {
+    $stmt = $conn->prepare("UPDATE pengajuan SET status = ? WHERE id_pengajuan = ?");
+    $stmt->execute([$status, $id]);
+}
 
 if ($action === 'approve') {
     $stmtCheck = $conn->prepare("SELECT * FROM pendaftaran_magang WHERE id_mahasiswa = ?");

@@ -106,16 +106,14 @@ unset($_SESSION['success']);
     </div>
 
     <?php if ($error): ?>
-        <div class="alert alert-danger alert-dismissible fade show" style="border-radius: 12px; font-size: 14px;">
+        <div class="alert alert-danger fade show" style="border-radius: 12px; font-size: 14px;">
             <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     <?php endif; ?>
 
     <?php if ($success): ?>
-        <div class="alert alert-success alert-dismissible fade show" style="border-radius: 12px; font-size: 14px;">
+        <div class="alert alert-success fade show" style="border-radius: 12px; font-size: 14px;">
             <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($success) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     <?php endif; ?>
 
@@ -198,6 +196,17 @@ unset($_SESSION['success']);
                 inputField.type = 'password';
                 this.classList.replace('bi-eye-slash', 'bi-eye');
             }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(function() { alert.remove(); }, 500);
+            }, 3000);
         });
     });
 </script>

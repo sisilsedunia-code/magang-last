@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 
 require_once 'config/database.php';
@@ -106,10 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <?php if(!empty($error)): ?>
-        <div class="alert alert-danger alert-dismissible fade show">
+        <div class="alert alert-danger fade show">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             <?= $error ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     <?php endif; ?>
 
@@ -151,6 +150,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         this.classList.toggle('bi-eye');
         this.classList.toggle('bi-eye-slash');
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(function() { alert.remove(); }, 500);
+            }, 3000);
+        });
     });
 </script>
 </body>
