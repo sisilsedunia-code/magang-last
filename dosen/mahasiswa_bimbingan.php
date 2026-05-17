@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 
 require_once '../config/database.php';
@@ -65,7 +65,7 @@ if (!empty($search)) {
 }
 
 $query .= "
-    GROUP BY m.id_mahasiswa
+    GROUP BY m.id_mahasiswa, pm.tempat_magang, pm.status_pendaftaran, pm.tanggal_mulai, pm.tanggal_selesai
     ORDER BY m.nama ASC
     LIMIT $limit
     OFFSET $offset
