@@ -4,7 +4,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -144,7 +144,7 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
                         <div class="dropdown-header">Akun Saya</div>
                         <a href="#" id="btnProfil"><i class="bi bi-person me-2"></i>Profil</a>
                         <div class="dropdown-divider my-1"></div>
-                        <a href="/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
+                        <a href="/magang-last/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
                     </div>
                 </div>
             </div>
@@ -316,7 +316,7 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
             <p>Apakah Anda yakin ingin keluar dari sistem?</p>
             <div class="modal-actions">
                 <button class="btn-cancel" id="btnBatal">Batal</button>
-                <a href="/logout" style="flex:1;text-decoration:none;"><button class="btn-logout" style="width:100%;">Ya, Keluar</button></a>
+                <a href="/magang-last/logout" style="flex:1;text-decoration:none;"><button class="btn-logout" style="width:100%;">Ya, Keluar</button></a>
             </div>
         </div>
     </div>
@@ -362,4 +362,5 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
 
 </body>
 </html>
+
 

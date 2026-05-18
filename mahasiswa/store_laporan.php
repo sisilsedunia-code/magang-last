@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Jakarta');
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -138,3 +138,4 @@ $_SESSION['success'] = "Logbook berhasil dikirim.";
 
 header("Location: laporan_harian.php");
 exit;
+

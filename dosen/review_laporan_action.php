@@ -4,7 +4,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -64,3 +64,4 @@ if ($action == 'approve') {
 
 header("Location: review_laporan.php");
 exit;
+

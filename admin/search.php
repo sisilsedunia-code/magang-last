@@ -3,7 +3,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -254,3 +254,4 @@ $total_hasil = count($hasil_mahasiswa) + count($hasil_dosen) + count($hasil_peng
     </div>
 </body>
 </html>
+

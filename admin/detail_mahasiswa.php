@@ -4,7 +4,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -135,7 +135,7 @@ $admin =
                         <div class="profile-dropdown" id="profileDropdown">
                             <div class="dropdown-header">Akun Saya</div>
                             <a href="#" id="btnProfil"><i class="bi bi-person me-2"></i>Profil</a>
-                            <a href="/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
+                            <a href="/magang-last/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
                         </div>
                     </div>
                 </div>
@@ -403,4 +403,5 @@ $admin =
 </body>
 
 </html>
+
 

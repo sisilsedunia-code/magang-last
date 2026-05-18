@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="<?= defined('BASE_URL') ? BASE_URL : '/magang-last' ?>/assets/css/login.css">
     <style>
         .sso-divider {
             margin: 12px 0 10px;
@@ -68,7 +68,7 @@
 
     <div class="login-header">
         <div class="login-logo">
-            <img src="assets/logoLogin.png" alt="Logo Sistem">
+            <img src="<?= defined('BASE_URL') ? BASE_URL : '/magang-last' ?>/assets/logoLogin.png" alt="Logo Sistem">
         </div>
         <h4>Selamat Datang</h4>
     </div>
@@ -80,7 +80,7 @@
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="/login">
+    <form method="POST" action="<?= defined('BASE_URL') ? BASE_URL : '/magang-last' ?>/login">
 
         <div class="input-group-custom">
             <div class="icon-wrapper"><i class="bi bi-envelope"></i></div>
@@ -100,7 +100,7 @@
     </form>
     <div style="text-align:center; margin-top:10px;">
         <div class="sso-divider">atau</div>
-        <a href="auth/oauth_start.php" class="btn-google-sso">
+        <a href="<?= defined('BASE_URL') ? BASE_URL : '/magang-last' ?>/auth/oauth_start.php" class="btn-google-sso">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
             <span>Masuk dengan Google</span>
         </a>
@@ -133,3 +133,4 @@
 </script>
 </body>
 </html>
+

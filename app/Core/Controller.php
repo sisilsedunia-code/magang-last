@@ -13,7 +13,9 @@ class Controller {
     }
 
     public function redirect($url) {
-        header("Location: " . $url);
+        header("Location: " . (defined('BASE_URL') ? BASE_URL : '/magang-last') . $url);
         exit;
     }
 }
+
+

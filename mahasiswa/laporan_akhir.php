@@ -4,7 +4,7 @@ session_start();
 require_once '../config/database.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /login");
+    header("Location: /magang-last/login");
     exit;
 }
 
@@ -74,7 +74,7 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
                         <div class="dropdown-header">Akun Saya</div>
                         <a href="#" id="btnProfil"><i class="bi bi-person me-2"></i>Profil</a>
                         <div class="dropdown-divider my-1"></div>
-                        <a href="/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
+                        <a href="/magang-last/logout" class="text-danger" id="btnKeluar"><i class="bi bi-box-arrow-right me-2"></i>Keluar</a>
                     </div>
                 </div>
             </div>
@@ -294,4 +294,5 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
 </body>
 
 </html>
+
 
