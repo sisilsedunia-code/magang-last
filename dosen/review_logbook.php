@@ -184,10 +184,20 @@ foreach ($countData as $row) {
                                     <div class="text-muted" style="font-size: 12px; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= htmlspecialchars($log['tempat_magang']) ?></div>
                                 </td>
                                 <td class="py-3 text-muted"><?= substr($log['jam_masuk'], 0, 5) ?> - <?= substr($log['jam_keluar'], 0, 5) ?></td>
-                                <td class="px-4 py-3 text-end">
-                                    <button class="btn btn-sm btn-outline-success me-1" title="Setujui" data-bs-toggle="modal" data-bs-target="#modalReview<?= $log['id_laporan_harian'] ?>"><i class="bi bi-check-lg"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger me-2" title="Tolak / Revisi" data-bs-toggle="modal" data-bs-target="#modalReview<?= $log['id_laporan_harian'] ?>"><i class="bi bi-x-lg"></i></button>
-                                    <button class="btn btn-sm btn-light text-primary" title="Lihat Detail" data-bs-toggle="modal" data-bs-target="#modalReview<?= $log['id_laporan_harian'] ?>"><i class="bi bi-eye"></i></button>
+                                <td class="px-4 py-3 text-end" style="white-space: nowrap;">
+                                    <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmSetuju(event, this)">
+                                        <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
+                                        <input type="hidden" name="catatan_dosen" value="">
+                                        <button type="submit" name="action" value="approve" class="btn btn-sm btn-outline-success me-1" title="Setujui"><i class="bi bi-check-lg"></i></button>
+                                    </form>
+                                    
+                                    <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmTolak(event, this)">
+                                        <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
+                                        <input type="hidden" name="catatan_dosen" value="">
+                                        <button type="submit" name="action" value="reject" class="btn btn-sm btn-outline-danger me-1" title="Tolak / Revisi"><i class="bi bi-x-lg"></i></button>
+                                    </form>
+                                    
+                                    <button class="btn btn-sm btn-light text-primary" title="Lihat Detail" data-bs-toggle="modal" data-bs-target="#modalReview<?= $log['id_laporan_harian'] ?>" style="display: inline-block;"><i class="bi bi-eye"></i></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -318,6 +328,52 @@ foreach ($countData as $row) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/dosen.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function confirmSetuju(e, form) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Setujui Logbook?',
+            text: "Aktivitas mahasiswa ini akan disetujui",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="bi bi-check-lg me-1"></i> Ya, Setujui',
+            cancelButtonText: 'Batal',
+            customClass: {
+                title: 'fw-bold',
+                popup: 'rounded-4'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    }
+
+    function confirmTolak(e, form) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Tolak / Revisi?',
+            text: "Logbook ini akan dikembalikan agar mahasiswa dapat memperbaikinya",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="bi bi-x-lg me-1"></i> Ya, Tolak',
+            cancelButtonText: 'Batal',
+            customClass: {
+                title: 'fw-bold',
+                popup: 'rounded-4'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    }
+    </script>
 </body>
 </html>
 
