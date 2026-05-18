@@ -152,8 +152,8 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
                                 </td>
                                 <td class="px-4 py-3 text-end">
                                     <button class="btn btn-sm btn-light text-primary me-2" data-bs-toggle="modal" data-bs-target="#modalView<?= $log['id_laporan_harian'] ?>" title="Detail"><i class="bi bi-eye"></i></button>
-                                    <?php if ($log['status'] == 'Menunggu'): ?>
-                                        <button class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $log['id_laporan_harian'] ?>" title="Edit"><i class="bi bi-pencil"></i></button>
+                                    <?php if ($log['status'] == 'Menunggu' || $log['status'] == 'Ditolak'): ?>
+                                        <button class="btn btn-sm btn-light text-primary" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $log['id_laporan_harian'] ?>" title="Edit/Revisi"><i class="bi bi-pencil"></i></button>
                                     <?php else: ?>
                                         <button class="btn btn-sm btn-light text-muted" disabled title="Tidak bisa diedit (<?= $log['status'] ?>)"><i class="bi bi-pencil"></i></button>
                                     <?php endif; ?>

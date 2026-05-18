@@ -14,7 +14,7 @@ $db = new Database();
 $conn = $db->getConnection();
 
 $page = "review_logbook";
-$status_filter = $_GET['status'] ?? 'Semua';
+$status_filter = $_GET['status'] ?? 'Menunggu';
 
 $stmtDosen = $conn->prepare("
     SELECT *
@@ -177,7 +177,16 @@ foreach ($countData as $row) {
                                 </td>
                                 <td class="py-3">
                                     <div class="fw-semibold text-dark" style="font-size: 13px;"><?= date('l, d F Y', strtotime($log['tanggal_submit'])) ?></div>
-                                    <span class="badge bg-light text-primary border border-primary-subtle mt-1">Minggu <?= $log['minggu_ke'] ?></span>
+                                    <div class="d-flex gap-1 mt-1">
+                                        <span class="badge bg-light text-primary border border-primary-subtle">Minggu <?= $log['minggu_ke'] ?></span>
+                                        <?php if ($log['status'] == 'Disetujui'): ?>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Disetujui</span>
+                                        <?php elseif ($log['status'] == 'Ditolak'): ?>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Revisi</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Menunggu</span>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                                 <td class="py-3">
                                     <div class="text-dark" style="font-size: 14px;"><?= htmlspecialchars($log['kegiatan']) ?></div>
@@ -185,17 +194,21 @@ foreach ($countData as $row) {
                                 </td>
                                 <td class="py-3 text-muted"><?= substr($log['jam_masuk'], 0, 5) ?> - <?= substr($log['jam_keluar'], 0, 5) ?></td>
                                 <td class="px-4 py-3 text-end" style="white-space: nowrap;">
-                                    <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmSetuju(event, this)">
-                                        <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
-                                        <input type="hidden" name="catatan_dosen" value="">
-                                        <button type="submit" name="action" value="approve" class="btn btn-sm btn-outline-success me-1" title="Setujui"><i class="bi bi-check-lg"></i></button>
-                                    </form>
-                                    
-                                    <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmTolak(event, this)">
-                                        <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
-                                        <input type="hidden" name="catatan_dosen" value="">
-                                        <button type="submit" name="action" value="reject" class="btn btn-sm btn-outline-danger me-1" title="Tolak / Revisi"><i class="bi bi-x-lg"></i></button>
-                                    </form>
+                                    <?php if ($log['status'] == 'Menunggu'): ?>
+                                        <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmSetuju(event, this)">
+                                            <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
+                                            <input type="hidden" name="catatan_dosen" value="">
+                                            <input type="hidden" name="action" value="approve">
+                                            <button type="submit" class="btn btn-sm btn-outline-success me-1" title="Setujui"><i class="bi bi-check-lg"></i></button>
+                                        </form>
+                                        
+                                        <form action="review_action.php" method="POST" style="display: inline-block; margin: 0;" onsubmit="confirmTolak(event, this)">
+                                            <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
+                                            <input type="hidden" name="catatan_dosen" value="">
+                                            <input type="hidden" name="action" value="reject">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger me-1" title="Tolak / Revisi"><i class="bi bi-x-lg"></i></button>
+                                        </form>
+                                    <?php endif; ?>
                                     
                                     <button class="btn btn-sm btn-light text-primary" title="Lihat Detail" data-bs-toggle="modal" data-bs-target="#modalReview<?= $log['id_laporan_harian'] ?>" style="display: inline-block;"><i class="bi bi-eye"></i></button>
                                 </td>
@@ -356,8 +369,13 @@ foreach ($countData as $row) {
         e.preventDefault();
         Swal.fire({
             title: 'Tolak / Revisi?',
-            text: "Logbook ini akan dikembalikan agar mahasiswa dapat memperbaikinya",
+            text: "Berikan alasan mengapa logbook ini perlu direvisi:",
             icon: 'warning',
+            input: 'textarea',
+            inputPlaceholder: 'Tuliskan catatan revisi di sini...',
+            inputAttributes: {
+                'aria-label': 'Tuliskan catatan revisi di sini'
+            },
             showCancelButton: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#64748b',
@@ -366,9 +384,15 @@ foreach ($countData as $row) {
             customClass: {
                 title: 'fw-bold',
                 popup: 'rounded-4'
+            },
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Alasan revisi wajib diisi!'
+                }
             }
         }).then((result) => {
             if (result.isConfirmed) {
+                form.querySelector('input[name="catatan_dosen"]').value = result.value;
                 form.submit();
             }
         })
