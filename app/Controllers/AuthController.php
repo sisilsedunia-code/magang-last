@@ -64,16 +64,16 @@ class AuthController extends Controller {
         // Fallback for procedural file paths; eventually replace with MVC routes (/dashboard/admin etc)
         switch ($role) {
             case 'mahasiswa':
-                $this->redirect("/mahasiswa/beranda.php");
+                $this->redirect("/pages/mahasiswa/beranda.php");
                 break;
             case 'dosen':
-                $this->redirect("/dosen/dashboard.php");
+                $this->redirect("/pages/dosen/dashboard.php");
                 break;
             case 'admin':
-                $this->redirect("/admin/beranda.php");
+                $this->redirect("/pages/admin/beranda.php");
                 break;
             case 'kps':
-                $this->redirect("/kaprodi/dashboard.php");
+                $this->redirect("/pages/kaprodi/dashboard.php");
                 break;
             default:
                 $this->redirect("/");

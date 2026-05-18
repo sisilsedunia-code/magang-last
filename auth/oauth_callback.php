@@ -129,13 +129,13 @@ $_SESSION['user'] = [
 
 switch ($user['role']) {
     case 'mahasiswa':
-        header('Location: ../mahasiswa/beranda.php');
+        header('Location: ../pages/mahasiswa/beranda.php');
         break;
     case 'dosen':
-        header('Location: ../dosen/dashboard.php');
+        header('Location: ../pages/dosen/dashboard.php');
         break;
     case 'kps':
-        header('Location: ../kaprodi/dashboard.php');
+        header('Location: ../pages/kaprodi/dashboard.php');
         break;
     default:
         header('Location: ../index.php');
