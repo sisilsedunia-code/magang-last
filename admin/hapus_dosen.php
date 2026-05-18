@@ -14,11 +14,22 @@ $id_dosen = $_POST['id_dosen'] ?? '';
 
 if (!empty($id_dosen)) {
     try {
+        $conn->beginTransaction();
+
+        // Hapus data berelasi terlebih dahulu
+        $conn->prepare("DELETE FROM nilai_akhir WHERE id_dosen = :id")->execute([':id' => $id_dosen]);
+        $conn->prepare("DELETE FROM pendaftaran_magang WHERE id_dosen = :id")->execute([':id' => $id_dosen]);
+        $conn->prepare("DELETE FROM kps WHERE id_dosen = :id")->execute([':id' => $id_dosen]);
+
         $stmt = $conn->prepare("DELETE FROM dosen WHERE id_dosen = :id");
         $stmt->bindParam(':id', $id_dosen);
         $stmt->execute();
-        
+
+        $conn->commit();
     } catch(PDOException $e) {
+        if ($conn->inTransaction()) {
+            $conn->rollBack();
+        }
         error_log("Gagal menghapus dosen: " . $e->getMessage());
     }
 }
