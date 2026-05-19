@@ -55,7 +55,7 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
         </div>
         <div class="nav-center">
             <a href="magang_aktif.php" class="<?= ($page == 'magang_aktif') ? 'active' : '' ?>">Beranda</a>
-            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Laporan Harian</a>
+            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Logbook Harian</a>
             <a href="laporan_akhir.php" class="<?= ($page == 'laporan_akhir') ? 'active' : '' ?>">Laporan Akhir</a>
             <a href="riwayat.php" class="<?= ($page == 'riwayat') ? 'active' : '' ?>">Riwayat</a>
         </div>
@@ -121,11 +121,29 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
                                     <div class="d-flex align-items-start">
-                                        <div class="bg-success-subtle text-success d-flex justify-content-center align-items-center me-3" style="width: 56px; height: 56px; border-radius: 14px;">
-                                            <i class="bi bi-file-earmark-check-fill" style="font-size: 24px;"></i>
+                                        <div class="<?php
+                                            if ($laporan_akhir['status_review'] == 'Disetujui') echo 'bg-success-subtle text-success';
+                                            elseif ($laporan_akhir['status_review'] == 'Menunggu') echo 'bg-warning-subtle text-warning';
+                                            else echo 'bg-danger-subtle text-danger';
+                                        ?> d-flex justify-content-center align-items-center me-3" style="width: 56px; height: 56px; border-radius: 14px;">
+                                            <?php if ($laporan_akhir['status_review'] == 'Disetujui'): ?>
+                                                <i class="bi bi-file-earmark-check-fill" style="font-size: 24px;"></i>
+                                            <?php elseif ($laporan_akhir['status_review'] == 'Menunggu'): ?>
+                                                <i class="bi bi-clock-fill" style="font-size: 24px;"></i>
+                                            <?php else: ?>
+                                                <i class="bi bi-exclamation-triangle-fill" style="font-size: 24px;"></i>
+                                            <?php endif; ?>
                                         </div>
                                         <div>
-                                            <h4 class="fw-bold mb-1" style="color: #1e293b;">Laporan berhasil diunggah</h4>
+                                            <h4 class="fw-bold mb-1" style="color: #1e293b;">
+                                                <?php if ($laporan_akhir['status_review'] == 'Disetujui'): ?>
+                                                    Laporan Akhir Disetujui
+                                                <?php elseif ($laporan_akhir['status_review'] == 'Menunggu'): ?>
+                                                    Laporan Menunggu Review
+                                                <?php else: ?>
+                                                    Laporan Perlu Revisi
+                                                <?php endif; ?>
+                                            </h4>
                                             <p class="text-muted mb-0">
                                                 <?php if ($laporan_akhir['status_review'] == 'Menunggu'): ?>
                                                     Menunggu review dosen pembimbing
@@ -163,11 +181,15 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
 
-                                <div class="mt-4">
-                                    <div class="text-muted small mb-2">Dokumen Laporan</div>
-                                    <a href="../../uploads/<?= $laporan_akhir['file_laporan'] ?>" target="_blank" class="btn btn-outline-primary">
+                                <div class="mt-4 d-flex gap-2">
+                                    <a href="../../uploads/<?= $laporan_akhir['file_laporan'] ?>" target="_blank" class="btn btn-outline-primary fw-semibold" style="border-radius: 8px;">
                                         <i class="bi bi-file-earmark-pdf-fill me-2"></i>Lihat Dokumen
                                     </a>
+                                    <?php if ($laporan_akhir['status_review'] == 'Revisi' || $laporan_akhir['status_review'] == 'Ditolak'): ?>
+                                        <button class="btn btn-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#modalRevisi" style="border-radius: 8px; background: linear-gradient(135deg, #2563eb, #7c3aed); border: none;">
+                                            <i class="bi bi-pencil-square me-2"></i>Revisi Laporan Akhir
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -288,6 +310,53 @@ $nilai = $stmtNilai->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+
+    <?php if ($laporan_akhir && ($laporan_akhir['status_review'] == 'Revisi' || $laporan_akhir['status_review'] == 'Ditolak')): ?>
+        <!-- Modal Revisi -->
+        <div class="modal fade" id="modalRevisi" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0" style="border-radius: 16px;">
+                    <div class="modal-header border-bottom-0 pb-0">
+                        <h5 class="modal-title fw-bold" style="color: #1e293b;">Revisi Laporan Akhir</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="store_laporan_akhir.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id_mahasiswa" value="<?= $user['id'] ?>">
+                        <div class="modal-body p-4">
+                            <?php if (!empty($laporan_akhir['catatan_dosen'])): ?>
+                                <div class="alert alert-danger border-0 p-3 mb-4 d-flex align-items-start" style="border-radius: 8px; background-color: #fef2f2;">
+                                    <i class="bi bi-exclamation-octagon-fill text-danger me-2" style="font-size: 18px; line-height: 1;"></i>
+                                    <div>
+                                        <div class="fw-bold text-danger mb-1" style="font-size: 13px;">Catatan Dosen Pembimbing:</div>
+                                        <div class="text-dark" style="font-size: 13px;"><?= nl2br(htmlspecialchars($laporan_akhir['catatan_dosen'])) ?></div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" style="color: #475569; font-size: 13px;">Judul Laporan</label>
+                                <input type="text" name="judul_laporan" class="form-control" style="border-radius: 8px;" value="<?= htmlspecialchars($laporan_akhir['judul_laporan']) ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" style="color: #475569; font-size: 13px;">Dokumen Laporan Akhir Baru (PDF)</label>
+                                <div class="border border-dashed p-4 text-center mt-2" style="border-radius: 12px; border-width: 2px; border-color: #cbd5e1; background: #f8fafc; border-style: dashed;">
+                                    <div class="mb-2">
+                                        <i class="bi bi-cloud-arrow-up text-primary" style="font-size: 24px;"></i>
+                                    </div>
+                                    <h6 class="fw-bold mb-1" style="font-size: 14px; color: #1e293b;">Klik untuk unggah file</h6>
+                                    <p class="text-muted small mb-2" style="font-size: 11px;">Maks. 10MB (Format PDF)</p>
+                                    <input type="file" name="file_laporan" class="form-control" accept=".pdf" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0">
+                            <button type="button" class="btn btn-light fw-semibold" data-bs-dismiss="modal" style="border-radius: 8px; flex: 1;">Batal</button>
+                            <button type="submit" class="btn btn-primary fw-semibold" style="border-radius: 8px; flex: 1; background: linear-gradient(135deg, #2563eb, #7c3aed); border: none;">Kirim Revisi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/mahasiswa.js"></script>

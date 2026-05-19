@@ -152,10 +152,13 @@ $data_mahasiswa = $stmtMahasiswa->fetchAll(PDO::FETCH_ASSOC);
     <div class="main-container">
         <div class="table-card">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <h4 class="mb-0 fw-bold page-title">Data Monitoring Mahasiswa Magang</h4>
+                <div>
+                    <h4 class="mb-0 fw-bold page-title">Data Monitoring Mahasiswa Magang</h4>
+                    <p class="text-muted mb-0" style="font-size:13px;">Pantau progress dan status seluruh mahasiswa magang</p>
+                </div>
                 
-                <form method="GET" class="d-flex align-items-center gap-2 flex-wrap">
-                    <select name="status" class="form-select form-select-sm" style="width: 180px;" onchange="this.form.submit()">
+                <form method="GET" id="filterForm" class="d-flex align-items-center gap-2 flex-wrap">
+                    <select name="status" class="form-select form-select-sm" style="width: 160px; border-radius:8px; border-color:#e2e8f0; font-size:13px;" onchange="this.form.submit()">
                         <option value="">Semua Status</option>
                         <option value="Aktif" <?= $status == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
                         <option value="Selesai" <?= $status == 'Selesai' ? 'selected' : '' ?>>Selesai</option>
@@ -163,8 +166,14 @@ $data_mahasiswa = $stmtMahasiswa->fetchAll(PDO::FETCH_ASSOC);
                         <option value="Belum Magang" <?= $status == 'Belum Magang' ? 'selected' : '' ?>>Belum Magang</option>
                     </select>
 
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama atau NIM..." value="<?= htmlspecialchars($search) ?>" style="width: 240px;">
-                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" name="search" class="form-control" 
+                               placeholder="Cari nama atau NIM..." 
+                               value="<?= htmlspecialchars($search) ?>"
+                               id="searchInput"
+                               autocomplete="off">
+                    </div>
                 </form>
             </div>
             
@@ -363,6 +372,18 @@ $data_mahasiswa = $stmtMahasiswa->fetchAll(PDO::FETCH_ASSOC);
                 detailModal.show();
             });
         });
+
+        // Auto-submit search on typing (debounced)
+        const searchInput = document.getElementById('searchInput');
+        let searchTimer;
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    document.getElementById('filterForm').submit();
+                }, 400);
+            });
+        }
     </script>
 </body>
 </html>

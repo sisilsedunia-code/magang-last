@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Email Aktif</label>
-                            <input type="email" class="form-control custom-input" name="email" placeholder="contoh: dosen@magang.ac.id" required>
+                            <input type="email" class="form-control custom-input" name="email" placeholder="contoh: nama@polije.ac.id" required>
                         </div>
 
                         <div class="col-md-6">

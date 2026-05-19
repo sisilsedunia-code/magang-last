@@ -56,6 +56,7 @@ $week = max(1, floor(($currentDuration / 60 / 60 / 24) / 7) + 1);
 
 $id_pendaftaran = $pendaftaran['id_pendaftaran'];
 
+
 $stmtTotal = $conn->prepare("
     SELECT COUNT(*)
     FROM laporan_harian
@@ -89,7 +90,7 @@ $stmtDitolak->execute([$id_pendaftaran]);
 $total_ditolak = $stmtDitolak->fetchColumn();
 
 $stmtNotif = $conn->prepare("
-    SELECT kegiatan, status, minggu_ke, tanggal_submit
+    SELECT kegiatan, status, minggu_ke, tanggal_submit, catatan_dosen
     FROM laporan_harian
     WHERE id_mahasiswa = ?
     ORDER BY tanggal_submit DESC
@@ -118,7 +119,7 @@ $data_notif = $stmtNotif->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="nav-center">
             <a href="magang_aktif.php" class="<?= ($page == 'magang_aktif') ? 'active' : '' ?>">Beranda</a>
-            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Laporan Harian</a>
+            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Logbook Harian</a>
             <a href="laporan_akhir.php" class="<?= ($page == 'laporan_akhir') ? 'active' : '' ?>">Laporan Akhir</a>
             <a href="riwayat.php" class="<?= ($page == 'riwayat') ? 'active' : '' ?>">Riwayat</a>
         </div>
@@ -217,7 +218,12 @@ $data_notif = $stmtNotif->fetchAll(PDO::FETCH_ASSOC);
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="notif-body"><?= htmlspecialchars($notif['kegiatan']) ?> untuk minggu ke-<?= $notif['minggu_ke'] ?>.</div>
+                        <div class="notif-body">
+                            <?= htmlspecialchars($notif['kegiatan']) ?> untuk minggu ke-<?= $notif['minggu_ke'] ?>.
+                            <?php if ($notif['status'] == 'Ditolak' && !empty($notif['catatan_dosen'])): ?>
+                                <div class="text-danger mt-1 small fw-semibold"><i class="bi bi-exclamation-circle me-1"></i>Revisi: <?= htmlspecialchars($notif['catatan_dosen']) ?></div>
+                            <?php endif; ?>
+                        </div>
                         <div class="notif-time"><?= date('d M Y H:i', strtotime($notif['tanggal_submit'])) ?></div>
                     </div>
                     <?php endforeach; ?>

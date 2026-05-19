@@ -2,6 +2,41 @@
    MONITORING MAHASISWA - Page Specific Styles
    ========================================== */
 
+/* Search Box - matches admin style */
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 12px;
+    width: 280px;
+    transition: border-color 0.2s;
+}
+.search-box:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+.search-box i {
+    color: #94a3b8;
+    margin-right: 10px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.search-box .form-control {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    color: #475569;
+    font-size: 13px;
+    padding: 0;
+    box-shadow: none;
+}
+.search-box .form-control::placeholder {
+    color: #94a3b8;
+}
+
 /* Progress Bar */
 .progress-bar-container {
     height: 8px;
@@ -12,7 +47,7 @@
 }
 .progress-bar-fill {
     height: 100%;
-    background-color: #7c3aed;
+    background-color: #2563eb;
     border-radius: 10px;
 }
 
@@ -46,7 +81,7 @@
 .progress-info .progress-percent {
     font-size: 12px;
     font-weight: 600;
-    color: #7c3aed;
+    color: #2563eb;
 }
 .progress-info .progress-percent.warning {
     color: #ea580c;
@@ -66,11 +101,11 @@
 
 /* Pagination */
 .pagination .page-link {
-    color: #7c3aed;
+    color: #2563eb;
 }
 .pagination .page-item.active .page-link {
-    background-color: #7c3aed;
-    border-color: #7c3aed;
+    background-color: #2563eb;
+    border-color: #2563eb;
     color: #fff;
 }
 

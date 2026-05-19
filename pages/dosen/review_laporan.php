@@ -174,7 +174,13 @@ foreach ($countData as $row) {
                                     </a>
                                 </td>
                                 <td class="py-4 px-4 text-end">
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalLaporan<?= $lap['id_laporan_akhir'] ?>">Nilai Laporan</button>
+                                    <?php if ($lap['status_review'] == 'Menunggu'): ?>
+                                        <button class="btn btn-primary btn-sm fw-semibold" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#modalLaporan<?= $lap['id_laporan_akhir'] ?>">Nilai Laporan</button>
+                                    <?php elseif ($lap['status_review'] == 'Disetujui'): ?>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-semibold"><i class="bi bi-check-circle me-1"></i>Sudah Dinilai</span>
+                                    <?php elseif ($lap['status_review'] == 'Ditolak'): ?>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-semibold"><i class="bi bi-clock me-1"></i>Menunggu Revisi</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

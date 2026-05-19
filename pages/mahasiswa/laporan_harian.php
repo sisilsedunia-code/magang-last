@@ -50,7 +50,7 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Harian - SIMMAG</title>
+    <title>Logbook Harian - SIMMAG</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -66,7 +66,7 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="nav-center">
             <a href="magang_aktif.php" class="<?= ($page == 'magang_aktif') ? 'active' : '' ?>">Beranda</a>
-            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Laporan Harian</a>
+            <a href="laporan_harian.php" class="<?= ($page == 'laporan_harian') ? 'active' : '' ?>">Logbook Harian</a>
             <a href="laporan_akhir.php" class="<?= ($page == 'laporan_akhir') ? 'active' : '' ?>">Laporan Akhir</a>
             <a href="riwayat.php" class="<?= ($page == 'riwayat') ? 'active' : '' ?>">Riwayat</a>
         </div>
@@ -216,6 +216,15 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4">
+                        <?php if ($log['status'] == 'Ditolak' && !empty($log['catatan_dosen'])): ?>
+                            <div class="alert alert-danger no-dismiss border-0 p-3 mb-3 d-flex align-items-start" style="border-radius: 8px; background-color: #fef2f2;">
+                                <i class="bi bi-exclamation-octagon-fill text-danger me-2" style="font-size: 18px; line-height: 1;"></i>
+                                <div>
+                                    <div class="fw-bold text-danger mb-1" style="font-size: 13px;">Catatan Revisi Dosen:</div>
+                                    <div class="text-dark" style="font-size: 13px;"><?= nl2br(htmlspecialchars($log['catatan_dosen'])) ?></div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <div class="mb-3">
                             <label class="form-label fw-semibold" style="color: #475569; font-size: 13px;">Tanggal Aktivitas</label>
                             <p class="text-dark mb-0 fw-medium"><?= date('l, d F Y', strtotime($log['tanggal_submit'])) ?></p>
@@ -264,6 +273,15 @@ $data_logbook = $stmtLogbook->fetchAll(PDO::FETCH_ASSOC);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4">
+                        <?php if ($log['status'] == 'Ditolak' && !empty($log['catatan_dosen'])): ?>
+                            <div class="alert alert-danger no-dismiss border-0 p-3 mb-3 d-flex align-items-start" style="border-radius: 8px; background-color: #fef2f2;">
+                                <i class="bi bi-exclamation-octagon-fill text-danger me-2" style="font-size: 18px; line-height: 1;"></i>
+                                <div>
+                                    <div class="fw-bold text-danger mb-1" style="font-size: 13px;">Catatan Revisi Dosen:</div>
+                                    <div class="text-dark" style="font-size: 13px;"><?= nl2br(htmlspecialchars($log['catatan_dosen'])) ?></div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <form action="update_laporan.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="id_laporan_harian" value="<?= $log['id_laporan_harian'] ?>">
 

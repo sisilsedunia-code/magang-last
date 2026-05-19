@@ -80,6 +80,9 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                 <a href="dosen.php" class="<?= ($page == 'dosen') ? 'active' : '' ?>">
                     <i class="bi bi-person-badge me-2"></i> Dosen
                 </a>
+                <a href="mitra.php" class="<?= ($page == 'mitra') ? 'active' : '' ?>">
+                    <i class="bi bi-building me-2"></i> Mitra
+                </a>
                 <a href="pengajuan.php" class="<?= ($page == 'pengajuan') ? 'active' : '' ?>">
                     <i class="bi bi-send me-2"></i> Pengajuan
                 </a>
@@ -179,7 +182,7 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="detail_dosen.php?id=<?= $dsn['id_dosen'] ?>" class="btn-action" title="Detail Dosen">
+                                        <a href="detail_dosen.php?id=<?= $dsn['id_dosen'] ?>" class="btn-action btn-view" title="Detail Dosen">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                         <a href="#" class="btn-action btn-edit"

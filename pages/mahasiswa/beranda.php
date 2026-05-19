@@ -23,7 +23,17 @@ $stmtPengajuan = $conn->prepare("
 $stmtPengajuan->execute([$user['id']]);
 $pengajuan = $stmtPengajuan->fetch(PDO::FETCH_ASSOC);
 
-if ($pengajuan && $pengajuan['status'] == 'Disetujui') {
+$stmtPendaftaran = $conn->prepare("
+    SELECT *
+    FROM pendaftaran_magang
+    WHERE id_mahasiswa = ?
+    ORDER BY id_pendaftaran DESC
+    LIMIT 1
+");
+$stmtPendaftaran->execute([$user['id']]);
+$pendaftaran = $stmtPendaftaran->fetch(PDO::FETCH_ASSOC);
+
+if ($pendaftaran && $pendaftaran['status_pendaftaran'] == 'Aktif') {
     header("Location: magang_aktif.php");
     exit;
 }
@@ -47,7 +57,19 @@ $nama_mahasiswa = $data['nama'];
 $nim = $data['NIM'];
 $prodi = $data['prodi'];
 $email = $data['email'];
-$status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
+$email = $data['email'];
+
+if ($pendaftaran && $pendaftaran['status_pendaftaran'] == 'Selesai') {
+    $status_pengajuan = 'Selesai';
+    
+    // Fetch grade
+    $stmtNilai = $conn->prepare("SELECT nilai FROM nilai_akhir WHERE id_mahasiswa = ?");
+    $stmtNilai->execute([$user['id']]);
+    $nilai_akhir = $stmtNilai->fetchColumn();
+    
+} else {
+    $status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -193,6 +215,28 @@ $status_pengajuan = $pengajuan['status'] ?? 'Belum Ada';
 
                     <a href="pengajuan.php" class="btn-primary-gradient">
                         <i class="bi bi-arrow-repeat me-2"></i>Ajukan Ulang
+                    </a>
+                </div>
+            </div>
+        <?php elseif ($status_pengajuan == 'Selesai') : ?>
+            <div class="empty-state-card" style="border: 2px solid #10b981; background: #ecfdf5;">
+                <div class="empty-state-content">
+                    <div class="empty-state-icon text-success" style="background: rgba(16, 185, 129, 0.1);">
+                        <i class="bi bi-award-fill"></i>
+                    </div>
+                    <h3 class="text-success mt-3">Magang Selesai! 🎉</h3>
+                    <p>Selamat, <strong><?= htmlspecialchars($nama_mahasiswa) ?></strong>. Anda telah berhasil menyelesaikan seluruh rangkaian program magang di <strong><?= htmlspecialchars($pendaftaran['tempat_magang']) ?></strong>.</p>
+                    
+                    <div class="d-flex align-items-center justify-content-center gap-4 mt-4 mb-4">
+                        <div style="background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size:14px; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Nilai Akhir Magang</div>
+                            <div style="font-size:42px; font-weight:800; color:#10b981; line-height:1;"><?= htmlspecialchars($nilai_akhir ?? '-') ?></div>
+                            <span class="badge bg-success rounded-pill px-3 py-1 mt-2" style="font-size:12px;">Lulus</span>
+                        </div>
+                    </div>
+
+                    <a href="sertifikat.php" target="_blank" class="btn btn-success" style="padding: 12px 24px; border-radius: 8px; font-weight: 600; font-family: 'Inter', sans-serif;">
+                        <i class="bi bi-file-earmark-arrow-down me-2"></i>Download Sertifikat
                     </a>
                 </div>
             </div>

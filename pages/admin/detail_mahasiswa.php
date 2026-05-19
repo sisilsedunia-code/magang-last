@@ -218,16 +218,11 @@ $admin =
                             </div>
 
                             <div class="mt-4 p-3 bg-light" style="border-radius: 15px;">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <span class="small text-muted fw-medium">Status Magang</span>
                                     <span class="badge rounded-pill bg-primary px-3 py-2" style="font-size: 10px; font-weight: 600;">
                                         <?= strtoupper($mahasiswa['status_pendaftaran'] ?? 'BELUM AKTIF') ?>
                                     </span>
-                                </div>
-                                <div class="d-grid gap-2">
-                                    <a href="mailto:<?= $mahasiswa['email'] ?>" class="btn btn-outline-primary btn-sm" style="border-radius: 10px; font-weight: 500;">
-                                        <i class="bi bi-chat-dots me-1"></i> Hubungi Mahasiswa
-                                    </a>
                                 </div>
                             </div>
                         </div>

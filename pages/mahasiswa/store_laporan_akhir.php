@@ -39,26 +39,58 @@ if (
     $file_laporan = $filename;
 }
 
-$stmt = $conn->prepare("
-    INSERT INTO laporan_akhir
-    (
-        id_mahasiswa,
-        judul_laporan,
-        file_laporan,
-        status_review,
-        tanggal_upload
-    )
-    VALUES
-    (
-        ?, ?, ?, 'Menunggu', NOW()
-    )
-");
+// Check if final report already exists for this student
+$stmtCheck = $conn->prepare("SELECT id_laporan_akhir, file_laporan FROM laporan_akhir WHERE id_mahasiswa = ?");
+$stmtCheck->execute([$id_mahasiswa]);
+$existing = $stmtCheck->fetch(PDO::FETCH_ASSOC);
 
-$stmt->execute([
-    $id_mahasiswa,
-    $judul_laporan,
-    $file_laporan
-]);
+if ($existing) {
+    // If a new file is uploaded and we already have an old one, delete the old file
+    if ($file_laporan && !empty($existing['file_laporan'])) {
+        $old_file_path = "../../uploads/" . $existing['file_laporan'];
+        if (file_exists($old_file_path)) {
+            unlink($old_file_path);
+        }
+    }
+    
+    // Determine which file to save (use new uploaded file, or keep the existing one if none uploaded)
+    $file_to_save = $file_laporan ? $file_laporan : $existing['file_laporan'];
+
+    $stmt = $conn->prepare("
+        UPDATE laporan_akhir
+        SET judul_laporan = ?,
+            file_laporan = ?,
+            status_review = 'Menunggu',
+            catatan_dosen = NULL,
+            tanggal_upload = NOW()
+        WHERE id_mahasiswa = ?
+    ");
+    $stmt->execute([
+        $judul_laporan,
+        $file_to_save,
+        $id_mahasiswa
+    ]);
+} else {
+    $stmt = $conn->prepare("
+        INSERT INTO laporan_akhir
+        (
+            id_mahasiswa,
+            judul_laporan,
+            file_laporan,
+            status_review,
+            tanggal_upload
+        )
+        VALUES
+        (
+            ?, ?, ?, 'Menunggu', NOW()
+        )
+    ");
+    $stmt->execute([
+        $id_mahasiswa,
+        $judul_laporan,
+        $file_laporan
+    ]);
+}
 
 header("Location: laporan_akhir.php");
 exit;

@@ -48,7 +48,15 @@ if ($action == 'approve') {
         $stmtNilai->execute([$id_mahasiswa, $id_dosen, $nilai]);
     }
 
-    $_SESSION['success'] = "Laporan berhasil disetujui.";
+    // UPDATE pendaftaran_magang status to 'Selesai'
+    $stmtSelesai = $conn->prepare("
+        UPDATE pendaftaran_magang 
+        SET status_pendaftaran = 'Selesai' 
+        WHERE id_mahasiswa = ?
+    ");
+    $stmtSelesai->execute([$id_mahasiswa]);
+
+    $_SESSION['success'] = "Laporan berhasil disetujui. Status magang mahasiswa telah selesai.";
 } else {
     $stmt = $conn->prepare("
         UPDATE laporan_akhir

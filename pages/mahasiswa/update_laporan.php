@@ -42,7 +42,8 @@ $stmt = $conn->prepare("
         jam_keluar      = ?,
         kegiatan        = ?,
         file_pendukung  = ?,
-        status          = 'Menunggu'
+        status          = 'Menunggu',
+        catatan_dosen   = NULL
     WHERE id_laporan_harian = ?
 ");
 

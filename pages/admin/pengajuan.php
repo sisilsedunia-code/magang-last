@@ -109,6 +109,10 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                     <i class="bi bi-person-badge me-2"></i> Dosen
                 </a>
 
+                <a href="mitra.php" class="<?= ($page == 'mitra') ? 'active' : '' ?>">
+                    <i class="bi bi-building me-2"></i> Mitra
+                </a>
+
                 <a href="pengajuan.php" class="<?= ($page == 'pengajuan') ? 'active' : '' ?>">
                     <i class="bi bi-send me-2"></i> Pengajuan
                 </a>
@@ -209,8 +213,8 @@ $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1">
-                                            <a href="#" class="btn-action btn-detail" title="Lihat Detail" data-idx="<?= $idx ?>">
-                                                <i class="bi bi-eye"></i>
+                                            <a href="#" class="btn-action btn-view" title="Lihat Detail" data-idx="<?= $idx ?>">
+                                                <i class="bi bi-eye-fill"></i>
                                             </a>
                                             <?php if ($pgj['status'] === 'Menunggu'): ?>
                                                 <a href="#" class="btn-action btn-approve" data-id="<?= $pgj['id_pengajuan'] ?>"><i class="bi bi-check-lg"></i>

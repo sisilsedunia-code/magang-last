@@ -123,11 +123,18 @@ $data_dosen = $stmtDosen->fetchAll(PDO::FETCH_ASSOC);
     <div class="main-container">
         <div class="table-card">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <h4 class="mb-0 fw-bold page-title">Pemantauan Kinerja Dosen Pembimbing</h4>
-                <form method="GET" class="filter-section">
+                <div>
+                    <h4 class="mb-0 fw-bold page-title">Pemantauan Kinerja Dosen Pembimbing</h4>
+                    <p class="text-muted mb-0" style="font-size:13px;">Monitor beban bimbingan dan review laporan setiap dosen</p>
+                </div>
+                <form method="GET" id="filterForm" class="filter-section">
                     <div class="search-box">
                         <i class="bi bi-search"></i>
-                        <input type="text" name="search" class="form-control" placeholder="Cari nama dosen atau NIP..." value="<?= htmlspecialchars($search) ?>" onchange="this.form.submit()">
+                        <input type="text" name="search" class="form-control"
+                               placeholder="Cari nama dosen atau NIP..."
+                               value="<?= htmlspecialchars($search) ?>"
+                               id="searchInput"
+                               autocomplete="off">
                     </div>
                 </form>
             </div>
@@ -248,6 +255,19 @@ $data_dosen = $stmtDosen->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/kaprodi.js"></script>
+    <script>
+        // Auto-submit search on typing (debounced)
+        const searchInput = document.getElementById('searchInput');
+        let searchTimer;
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    document.getElementById('filterForm').submit();
+                }, 400);
+            });
+        }
+    </script>
 </body>
 </html>
 

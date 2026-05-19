@@ -256,8 +256,8 @@ $page = "dosen";
                                                     </span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="detail_mahasiswa.php?id=<?= $mhs['id_mahasiswa'] ?>" class="btn btn-sm btn-light text-primary" title="Detail Mahasiswa">
-                                                        <i class="bi bi-eye"></i>
+                                                    <a href="detail_mahasiswa.php?id=<?= $mhs['id_mahasiswa'] ?>" class="btn-action btn-view" title="Detail Mahasiswa">
+                                                        <i class="bi bi-eye-fill"></i>
                                                     </a>
                                                 </td>
                                             </tr>

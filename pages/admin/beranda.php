@@ -93,6 +93,9 @@ $admin =
                 <a href="dosen.php">
                     <i class="bi bi-person-badge me-2"></i> Dosen
                 </a>
+                <a href="mitra.php" class="<?= ($page == 'mitra') ? 'active' : '' ?>">
+                    <i class="bi bi-building me-2"></i> Mitra
+                </a>
                 <a href="pengajuan.php">
                     <i class="bi bi-send me-2"></i> Pengajuan
                 </a>

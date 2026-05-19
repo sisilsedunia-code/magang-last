@@ -76,7 +76,7 @@ function openDetail(idx) {
   detailModal.classList.add("show");
 }
 
-document.querySelectorAll(".btn-detail").forEach((btn) => {
+document.querySelectorAll(".btn-view").forEach((btn) => {
   btn.addEventListener("click", function (e) {
     e.preventDefault();
 

@@ -54,9 +54,9 @@ if (profileModal) {
     });
 }
 
-// Auto-hide alerts after 3 seconds
+// Auto-hide alerts after 3 seconds (excl. alerts with .no-dismiss)
 document.addEventListener("DOMContentLoaded", function() {
-    const alerts = document.querySelectorAll(".alert");
+    const alerts = document.querySelectorAll(".alert:not(.no-dismiss)");
     alerts.forEach(function(alert) {
         setTimeout(function() {
             alert.style.transition = "opacity 0.5s ease";
